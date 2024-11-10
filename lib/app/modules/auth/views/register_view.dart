@@ -12,42 +12,89 @@ class RegisterView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(Dimensions.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Add logo here
-              const SizedBox(height: Dimensions.xl),
-              const Text(
-                'Create Account',
-                style: TextStyle(
-                  fontSize: Dimensions.fontXxl,
-                  fontWeight: FontWeight.bold,
+        child: Center(
+          // Added Center widget
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.md,
+                vertical: Dimensions.lg,
+              ),
+              child: ConstrainedBox(
+                // Added to ensure minimum height
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      (Dimensions.lg * 2),
                 ),
-                textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center vertically
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Create Account text
+                    const Text(
+                      'Create Account',
+                      style: TextStyle(
+                        fontSize: Dimensions.fontXxl,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: Dimensions.xl), // Increased spacing
+
+                    // Registration form
+                    AuthForm(
+                      buttonText: 'Sign Up',
+                      formKey: controller.registerFormKey,
+                      onSubmit: controller.register,
+                      isLogin: false,
+                    ),
+
+                    const SizedBox(height: Dimensions.xl), // Increased spacing
+
+                    // Social login buttons with proper spacing
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.sm,
+                      ),
+                      child: SocialLoginButtons(),
+                    ),
+
+                    const SizedBox(height: Dimensions.xl),
+
+                    // Sign in section with improved alignment
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account?',
+                          style: TextStyle(
+                            fontSize: Dimensions.fontSm,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Get.back(),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.sm,
+                            ),
+                          ),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              fontSize: Dimensions.fontSm,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: Dimensions.md),
-              AuthForm(
-                buttonText: 'Sign Up',
-                formKey: controller.registerFormKey,
-                onSubmit: controller.register,
-                isLogin: false,
-              ),
-              const SizedBox(height: Dimensions.lg),
-              const SocialLoginButtons(),
-              const SizedBox(height: Dimensions.lg),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Already have an account?'),
-                  TextButton(
-                    onPressed: () => Get.back(),
-                    child: const Text('Sign In'),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),

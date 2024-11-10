@@ -44,7 +44,7 @@ class SplashView extends GetView<SplashController> {
               ),
               child: ClipOval(
                 child: Image.asset(
-                  'assets/images/logo/callidus_play-logo.png',
+                  'assets/images/logo/callidus_logo.png',
                   width: 134,
                   height: 134,
                   fit: BoxFit.contain,
@@ -54,7 +54,7 @@ class SplashView extends GetView<SplashController> {
             const SizedBox(height: Dimensions.lg),
             // App Name
             const Text(
-              'CallidusPlay',
+              'Callidus Play',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: Dimensions.fontXxl,

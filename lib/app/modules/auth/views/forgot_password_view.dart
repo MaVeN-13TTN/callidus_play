@@ -11,36 +11,123 @@ class ForgotPasswordView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(Dimensions.md),
-          child: Form(
-            key: controller.forgotPasswordFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Enter your email address and we will send you instructions to reset your password.',
-                  textAlign: TextAlign.center,
+    return WillPopScope(
+      onWillPop: () async {
+        Get.back();
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () => Get.back(),
+          ),
+          title: const Text('Reset Password'),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.md,
+                  vertical: Dimensions.lg,
                 ),
-                const SizedBox(height: Dimensions.lg),
-                CustomTextField(
-                  controller: controller.emailController,
-                  label: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: ValidatorHelper.validateEmail,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        kToolbarHeight -
+                        (Dimensions.lg * 2),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Main content container
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 400),
+                        child: Form(
+                          key: controller.forgotPasswordFormKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Title with adjusted spacing
+                              const Text(
+                                'Forgot your password?',
+                                style: TextStyle(
+                                  fontSize: Dimensions.fontXl,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: Dimensions.md),
+
+                              // Instructions
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.md,
+                                  vertical: Dimensions.sm,
+                                ),
+                                child: Text(
+                                  'Don\'t worry! It happens. Please enter the email address associated with your account.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.fontMd,
+                                    color: Colors.grey[600],
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: Dimensions.xl),
+
+                              // Email input
+                              CustomTextField(
+                                controller: controller.emailController,
+                                label: 'Email Address',
+                                keyboardType: TextInputType.emailAddress,
+                                validator: ValidatorHelper.validateEmail,
+                                prefixIcon: const Icon(Icons.email_outlined),
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (_) => controller.forgotPassword(),
+                              ),
+                              const SizedBox(height: Dimensions.xl),
+
+                              // Submit button
+                              Obx(() => PrimaryButton(
+                                    text: 'Reset Password',
+                                    onPressed: controller.isLoading.value
+                                        ? null
+                                        : controller.forgotPassword,
+                                    isLoading: controller.isLoading.value,
+                                  )),
+
+                              // Back to login link
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Dimensions.md,
+                                ),
+                                child: TextButton.icon(
+                                  onPressed: () => Get.back(),
+                                  icon: const Icon(Icons.arrow_back),
+                                  label: const Text('Back to Login'),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: Dimensions.sm,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: Dimensions.md),
-                Obx(() => PrimaryButton(
-                      text: 'Send Reset Link',
-                      onPressed: controller.forgotPassword,
-                      isLoading: controller.isLoading.value,
-                    )),
-              ],
+              ),
             ),
           ),
         ),
