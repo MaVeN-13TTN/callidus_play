@@ -1,3 +1,4 @@
+// ignore_for_file: library_prefixes
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/values/dimensions.dart';

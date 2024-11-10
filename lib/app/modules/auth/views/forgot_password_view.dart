@@ -11,6 +11,7 @@ class ForgotPasswordView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Get.back();
@@ -111,7 +112,6 @@ class ForgotPasswordView extends GetView<AuthController> {
                                 ),
                                 child: TextButton.icon(
                                   onPressed: () => Get.back(),
-                                  icon: const Icon(Icons.arrow_back),
                                   label: const Text('Back to Login'),
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
