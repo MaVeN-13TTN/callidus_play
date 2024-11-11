@@ -1,3 +1,4 @@
+// home_controller.dart
 // ignore_for_file: avoid_print
 
 import 'package:get/get.dart';
@@ -48,25 +49,30 @@ class HomeController extends GetxController {
   }
 
   void changePage(int index) {
-    if (currentIndex.value == index) return;
+    if (currentIndex.value == index) {
+      refreshCurrentPage();
+      return;
+    }
 
     currentIndex.value = index;
+  }
 
-    switch (index) {
+  void refreshCurrentPage() {
+    switch (currentIndex.value) {
       case 0:
-        refreshHome();
+        fetchHomeData();
         break;
       case 1:
-        Get.toNamed(Routes.CATEGORIES);
+        // Refresh categories if needed
         break;
       case 2:
-        Get.toNamed(Routes.CART);
+        _cartController.fetchCart();
         break;
       case 3:
-        Get.toNamed(Routes.WISHLIST);
+        _wishlistController.refreshWishlist();
         break;
       case 4:
-        Get.toNamed(Routes.PROFILE);
+        // Refresh profile if needed
         break;
     }
   }
@@ -151,9 +157,27 @@ class HomeController extends GetxController {
     }
   }
 
-  void refreshHome() {
-    if (currentIndex.value == 0) {
-      fetchHomeData();
-    }
+  void navigateToProduct(Product product) {
+    Get.toNamed(Routes.PRODUCT_DETAIL, arguments: product);
+  }
+
+  void navigateToCategory(Category category) {
+    Get.toNamed(Routes.CATEGORIES, arguments: category);
+  }
+
+  void navigateToAllProducts({String? type, String? title}) {
+    Get.toNamed(
+      Routes.PRODUCTS,
+      arguments: {
+        if (type != null) 'type': type,
+        if (title != null) 'title': title,
+      },
+    );
+  }
+
+  @override
+  void onClose() {
+    currentIndex.value = 0;
+    super.onClose();
   }
 }
