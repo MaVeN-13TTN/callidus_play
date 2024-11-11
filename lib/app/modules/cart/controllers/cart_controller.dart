@@ -119,4 +119,6 @@ class CartController extends GetxController {
   String get total => CurrencyHelper.formatPrice(cart.value?.total ?? 0);
 
   int get itemCount => cart.value?.items.length ?? 0;
+
+  RxList<Object?> get items => cart.value?.items.obs ?? <Object?>[].obs;
 }

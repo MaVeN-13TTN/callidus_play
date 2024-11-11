@@ -51,4 +51,6 @@ class NewArrivals extends StatelessWidget {
       ),
     );
   }
+
+  adaptive() {}
 }

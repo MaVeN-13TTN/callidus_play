@@ -1,4 +1,3 @@
-// lib/app/modules/home/controllers/home_controller.dart
 // ignore_for_file: avoid_print
 
 import 'package:get/get.dart';
@@ -6,35 +5,76 @@ import '../../../data/services/product_service.dart';
 import '../../../data/services/category_service.dart';
 import '../../../data/models/product/product_model.dart';
 import '../../../data/models/product/category_model.dart';
+import '../../cart/controllers/cart_controller.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../../routes/app_pages.dart';
 
 class HomeController extends GetxController {
   final ProductService _productService = Get.find<ProductService>();
   final CategoryService _categoryService = Get.find<CategoryService>();
+  final CartController _cartController = Get.find<CartController>();
+  final WishlistController _wishlistController = Get.find<WishlistController>();
 
-  // Existing states
+  // Navigation state
+  final RxInt currentIndex = 0.obs;
+
+  // Data states
   final RxBool isLoading = false.obs;
   final RxList<Category> categories = <Category>[].obs;
   final RxList<Product> featuredProducts = <Product>[].obs;
   final RxList<Product> newArrivals = <Product>[].obs;
   final RxList<Product> specialOffers = <Product>[].obs;
 
-  // Add animation states
+  // Animation states
   final RxBool showCategories = false.obs;
   final RxBool showFeatured = false.obs;
   final RxBool showSpecialOffers = false.obs;
   final RxBool showNewArrivals = false.obs;
 
+  // Badge states
+  RxInt get cartBadgeCount => _cartController.itemCount.obs;
+  RxInt get wishlistBadgeCount => _wishlistController.itemCount;
+
   @override
   void onInit() {
     super.onInit();
     fetchHomeData();
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    ever(_cartController.items, (_) => update());
+    ever(_wishlistController.items, (_) => update());
+  }
+
+  void changePage(int index) {
+    if (currentIndex.value == index) return;
+
+    currentIndex.value = index;
+
+    switch (index) {
+      case 0:
+        refreshHome();
+        break;
+      case 1:
+        Get.toNamed(Routes.CATEGORIES);
+        break;
+      case 2:
+        Get.toNamed(Routes.CART);
+        break;
+      case 3:
+        Get.toNamed(Routes.WISHLIST);
+        break;
+      case 4:
+        Get.toNamed(Routes.PROFILE);
+        break;
+    }
   }
 
   Future<void> fetchHomeData() async {
     try {
       isLoading.value = true;
 
-      // Reset animation states
       showCategories.value = false;
       showFeatured.value = false;
       showSpecialOffers.value = false;
@@ -47,8 +87,9 @@ class HomeController extends GetxController {
         fetchSpecialOffers(),
       ]);
 
-      // Animate sections sequentially
       _animateSections();
+    } catch (e) {
+      print('Error fetching home data: $e');
     } finally {
       isLoading.value = false;
     }
@@ -111,6 +152,8 @@ class HomeController extends GetxController {
   }
 
   void refreshHome() {
-    fetchHomeData();
+    if (currentIndex.value == 0) {
+      fetchHomeData();
+    }
   }
 }

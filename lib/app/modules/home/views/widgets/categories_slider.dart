@@ -52,7 +52,7 @@ class CategoriesSlider extends StatelessWidget {
       margin: const EdgeInsets.only(right: Dimensions.sm),
       child: GestureDetector(
         onTap: () => Get.toNamed(
-          Routes.CATEGORY,
+          Routes.CATEGORIES,
           arguments: category,
         ),
         child: Column(

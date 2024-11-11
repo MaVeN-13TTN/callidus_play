@@ -16,7 +16,7 @@ abstract class Routes {
   static const PRODUCT_SEARCH = '/product-search';
   static const SEARCH = '/search';
   static const WISHLIST = '/wishlist';
-  static const CATEGORY = '/category';
+  static const CATEGORIES = '/categories';
 
   // Cart and checkout
   static const CART = '/cart';
