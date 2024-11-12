@@ -1,4 +1,3 @@
-// home_bottom_nav.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/values/app_colors.dart';
@@ -21,7 +20,9 @@ class HomeBottomNav extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(() => BottomNavigationBar(
           currentIndex: controller.currentIndex.value,
-          onTap: controller.changePage,
+          onTap: (index) {
+            controller.changePage(index);
+          },
           selectedItemColor: AppColors.primary,
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,

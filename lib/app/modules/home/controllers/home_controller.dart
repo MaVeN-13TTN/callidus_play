@@ -1,4 +1,3 @@
-// home_controller.dart
 // ignore_for_file: avoid_print
 
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import '../../../data/models/product/product_model.dart';
 import '../../../data/models/product/category_model.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../categories/controllers/categories_controller.dart';
 import '../../../routes/app_pages.dart';
 
 class HomeController extends GetxController {
@@ -63,7 +63,9 @@ class HomeController extends GetxController {
         fetchHomeData();
         break;
       case 1:
-        // Refresh categories if needed
+        if (Get.isRegistered<CategoriesController>()) {
+          Get.find<CategoriesController>().fetchCategories();
+        }
         break;
       case 2:
         _cartController.fetchCart();

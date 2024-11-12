@@ -1,4 +1,4 @@
-// lib/app/modules/home/views/widgets/home_app_bar.dart
+// home_app_bar.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/values/app_colors.dart';
@@ -20,67 +20,76 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return SliverAppBar(
-      expandedHeight: 120,
+      expandedHeight: 120 + topPadding,
       floating: true,
       pinned: true,
       elevation: 0,
       backgroundColor: AppColors.primary,
       flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+          final top = constraints.biggest.height - kToolbarHeight - topPadding;
           return FlexibleSpaceBar(
-            titlePadding: EdgeInsets.only(
+            titlePadding: const EdgeInsets.only(
               left: Dimensions.md,
               right: Dimensions.md,
               bottom: Dimensions.sm,
-              top: constraints.biggest.height - 80,
             ),
-            title: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(Dimensions.borderRadiusMd),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => Get.toNamed(Routes.SEARCH),
+            centerTitle: true,
+            title: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: top < kToolbarHeight ? 0.0 : 1.0,
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius:
                       BorderRadius.circular(Dimensions.borderRadiusMd),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Dimensions.sm),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.search, color: Colors.grey, size: 20),
-                        const SizedBox(width: Dimensions.sm),
-                        const Expanded(
-                          child: Text(
-                            'Search products...',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: Dimensions.fontMd,
-                              fontWeight: FontWeight.normal,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => Get.toNamed(Routes.SEARCH),
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.borderRadiusMd),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Dimensions.sm),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search,
+                              color: Colors.grey, size: 20),
+                          const SizedBox(width: Dimensions.sm),
+                          const Expanded(
+                            child: Text(
+                              'Search products...',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: Dimensions.fontMd,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 24,
-                          width: 1,
-                          color: AppColors.border,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: Dimensions.sm),
-                        ),
-                        const Icon(Icons.filter_list,
-                            color: Colors.grey, size: 20),
-                      ],
+                          Container(
+                            height: 24,
+                            width: 1,
+                            color: AppColors.border,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.sm),
+                          ),
+                          const Icon(Icons.filter_list,
+                              color: Colors.grey, size: 20),
+                        ],
+                      ),
                     ),
                   ),
                 ),

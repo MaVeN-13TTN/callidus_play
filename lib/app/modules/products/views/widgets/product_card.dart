@@ -1,3 +1,4 @@
+// product_card.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/utils/helpers/currency_helper.dart';
@@ -10,20 +11,24 @@ import '../../../cart/controllers/cart_controller.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final bool showAddToCart;
+  final VoidCallback? onTap; // Added onTap callback
 
   const ProductCard({
     super.key,
     required this.product,
     this.showAddToCart = true,
+    this.onTap, // Added to constructor
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(
-        Routes.PRODUCT_DETAIL,
-        arguments: product,
-      ),
+      onTap: onTap ??
+          () => Get.toNamed(
+                // Use provided onTap or default navigation
+                Routes.PRODUCT_DETAIL,
+                arguments: product,
+              ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

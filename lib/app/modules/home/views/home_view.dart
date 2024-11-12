@@ -1,9 +1,12 @@
-// home_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/values/dimensions.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../categories/views/categories_view.dart';
+import '../../cart/views/cart_view.dart';
+import '../../wishlist/views/wishlist_view.dart';
+import '../../profile/views/profile_view.dart';
 import '../controllers/home_controller.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/home_bottom_nav.dart';
@@ -28,22 +31,16 @@ class HomeView extends GetView<HomeController> {
             index: controller.currentIndex.value,
             children: [
               _buildHomeContent(cartController, wishlistController),
-              _buildLoadingPlaceholder(), // Placeholder for Categories
-              _buildLoadingPlaceholder(), // Placeholder for Cart
-              _buildLoadingPlaceholder(), // Placeholder for Wishlist
-              _buildLoadingPlaceholder(), // Placeholder for Profile
+              const CategoriesView(),
+              const CartView(),
+              const WishlistView(),
+              const ProfileView(),
             ],
           )),
       bottomNavigationBar: HomeBottomNav(
         cartController: cartController,
         wishlistController: wishlistController,
       ),
-    );
-  }
-
-  Widget _buildLoadingPlaceholder() {
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 

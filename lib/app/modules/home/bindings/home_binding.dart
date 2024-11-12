@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
-import '../controllers/search_controller.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../categories/controllers/categories_controller.dart';
+import '../../profile/controllers/profile_controller.dart';
 import '../../../data/services/product_service.dart';
 import '../../../data/services/category_service.dart';
 
@@ -22,8 +23,17 @@ class HomeBinding implements Bindings {
       Get.put(WishlistController(), permanent: true);
     }
 
-    // Home & Search Controllers
+    // Categories Controller
+    if (!Get.isRegistered<CategoriesController>()) {
+      Get.lazyPut(() => CategoriesController());
+    }
+
+    // Profile Controller
+    if (!Get.isRegistered<ProfileController>()) {
+      Get.lazyPut(() => ProfileController());
+    }
+
+    // Home Controller
     Get.lazyPut<HomeController>(() => HomeController());
-    Get.lazyPut<SearchController>(() => SearchController());
   }
 }
